@@ -4,11 +4,11 @@ import { View, Text, Image, Button, StyleSheet } from 'react-native';
 export default function App() {
   // List of animals with their Catalan names and image sources
   const animals = [
-    { name: 'gat', image: require('./assets/file-S2t2VBi33yujHcd6K46VbX~2.jpg') },
-    { name: 'gos', image: require('./assets/gos.png') },
-    { name: 'cavall', image: require('./assets/cavall.png') },
-    { name: 'peix', image: require('./assets/peix.png') },
-    { name: 'ocell', image: require('./assets/ocell.png') },
+    { name: 'gat', image: require('./assets/gat.jpg') },
+    { name: 'gos', image: require('./assets/gos.jog') },
+    { name: 'cavall', image: require('./assets/cavall.jpg') },
+    { name: 'peix', image: require('./assets/peix.jpg') },
+    { name: 'ocell', image: require('./assets/ocell.jpg') },
   ];
 
   // State to track the current animal
