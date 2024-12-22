@@ -1,15 +1,33 @@
-import React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Image, Button, StyleSheet } from 'react-native';
 
 export default function App() {
+  // List of animals with their Catalan names and image sources
+  const animals = [
+    { name: 'gat', image: require('./assets/gat.png') },
+    { name: 'gos', image: require('./assets/gos.png') },
+    { name: 'cavall', image: require('./assets/cavall.png') },
+    { name: 'peix', image: require('./assets/peix.png') },
+    { name: 'ocell', image: require('./assets/ocell.png') },
+  ];
+
+  // State to track the current animal
+  const [currentAnimal, setCurrentAnimal] = useState(0);
+  const [showAnswer, setShowAnswer] = useState(false);
+
+  // Handle next animal
+  const nextAnimal = () => {
+    setShowAnswer(false);
+    setCurrentAnimal((prev) => (prev + 1) % animals.length);
+  };
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Jocs en Català</Text>
-      <Text style={styles.subtitle}>Aprèn català jugant amb jocs divertits!</Text>
-      <Button
-        title="Comença a jugar"
-        onPress={() => alert("Jocs coming soon!")}
-      />
+      <Text style={styles.title}>Quin animal és?</Text>
+      <Image source={animals[currentAnimal].image} style={styles.image} />
+      {showAnswer && <Text style={styles.answer}>{animals[currentAnimal].name}</Text>}
+      <Button title="Què és això?" onPress={() => setShowAnswer(true)} />
+      <Button title="Següent animal" onPress={nextAnimal} />
     </View>
   );
 }
@@ -23,15 +41,20 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   title: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: 'bold',
     color: '#4a90e2',
     marginBottom: 20,
   },
-  subtitle: {
-    fontSize: 16,
+  image: {
+    width: 200,
+    height: 200,
+    marginBottom: 20,
+  },
+  answer: {
+    fontSize: 20,
+    fontWeight: 'bold',
     color: '#333',
-    marginBottom: 30,
-    textAlign: 'center',
+    marginBottom: 20,
   },
 });
