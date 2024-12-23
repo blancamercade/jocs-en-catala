@@ -9,6 +9,16 @@ export default function App() {
     { name: 'cavall', image: require('../../assets/images/cavall.jpg') },
     { name: 'peix', image: require('../../assets/images/peix.jpg') },
     { name: 'ocell', image: require('../../assets/images/ocell.jpg') },
+    { name: 'os', image: require('../../assets/images/os.jpg') },
+    { name: 'ren', image: require('../../assets/images/ren.jpg') },
+    { name: 'porc', image: require('../../assets/images/porc.jpg') },
+    { name: 'pollet', image: require('../../assets/images/pollet.jpg') },
+    { name: 'vaca', image: require('../../assets/images/vaca.jpg') },
+    { name: 'ovella', image: require('../../assets/images/ovella.jpg') },
+    { name: 'gallina', image: require('../../assets/images/gallina.jpg') },
+    { name: 'conill', image: require('../../assets/images/conill.jpg') },
+    { name: 'guineu', image: require('../../assets/images/guineu.jpg') },
+    { name: 'esquirol', image: require('../../assets/images/esquirol.jpg') },
   ];
 
   // State to track the current animal
