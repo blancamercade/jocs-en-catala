@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, Image, Button, StyleSheet } from 'react-native';
+import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
 export default function App() {
-  // List of animals with their Catalan names and image sources
   const animals = [
     { name: 'gat', image: require('../../assets/images/gat.jpg') },
     { name: 'gos', image: require('../../assets/images/gos.jpg') },
@@ -21,11 +20,9 @@ export default function App() {
     { name: 'esquirol', image: require('../../assets/images/esquirol.jpg') },
   ];
 
-  // State to track the current animal
   const [currentAnimal, setCurrentAnimal] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
 
-  // Handle next animal
   const nextAnimal = () => {
     setShowAnswer(false);
     setCurrentAnimal((prev) => (prev + 1) % animals.length);
@@ -34,10 +31,20 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Quin animal és?</Text>
-      <Image source={animals[currentAnimal].image} style={styles.image} />
+      <View style={styles.imageContainer}>
+        <Image
+          source={animals[currentAnimal].image}
+          style={styles.image}
+          resizeMode="contain"
+        />
+      </View>
       {showAnswer && <Text style={styles.answer}>{animals[currentAnimal].name}</Text>}
-      <Button title="Què és això?" onPress={() => setShowAnswer(true)} />
-      <Button title="Següent animal" onPress={nextAnimal} />
+      <TouchableOpacity style={styles.button} onPress={() => setShowAnswer(true)}>
+        <Text style={styles.buttonText}>QUÈ ÉS AIXÒ?</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={nextAnimal}>
+        <Text style={styles.buttonText}>SEGÜENT ANIMAL</Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -45,26 +52,49 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f8f8f8',
-    padding: 20,
+    justifyContent: 'center',
+    backgroundColor: '#FFF6F9', // Soft pink background for a kawaii style
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
-    color: '#4a90e2',
+    color: '#FF6F61',
+    marginBottom: 20,
+  },
+  imageContainer: {
+    width: 250,
+    height: 250,
+    borderRadius: 15,
+    backgroundColor: '#FFFFFF',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 2, height: 2 },
+    shadowRadius: 5,
     marginBottom: 20,
   },
   image: {
-    width: 200,
-    height: 200,
-    marginBottom: 20,
+    width: '100%',
+    height: '100%',
   },
   answer: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 'bold',
-    color: '#333',
+    color: '#FFB6C1',
     marginBottom: 20,
+  },
+  button: {
+    backgroundColor: '#FF6F61',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 30,
+    marginBottom: 15,
+  },
+  buttonText: {
+    fontSize: 18,
+    color: '#FFF',
+    fontWeight: 'bold',
   },
 });
