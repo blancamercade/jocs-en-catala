@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import * as Speech from 'expo-speech'; // Import the speech library
+import * as Speech from 'expo-speech'; // Importem la llibreria Text-to-Speech
 
 export default function App() {
   const animals = [
@@ -31,7 +31,11 @@ export default function App() {
 
   const speakWord = () => {
     const word = animals[currentAnimal].name;
-    Speech.speak(word, { language: 'ca' }); // Reads the word in Catalan
+    Speech.speak(word, {
+      language: 'ca', // Català
+      pitch: 1.0,     // Altura del to
+      rate: 1.0,      // Velocitat normal
+    });
   };
 
   return (
@@ -69,7 +73,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#FFFACD', // Chicken yellow background
+    backgroundColor: '#FFFACD', // Color de fons groc pollastre
   },
   title: {
     fontSize: 28,
@@ -113,7 +117,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   speakButton: {
-    backgroundColor: '#FFD700', // Golden yellow for the listen button
+    backgroundColor: '#FFD700', // Groc brillant per al botó "Escolta"
     paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 30,
