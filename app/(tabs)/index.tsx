@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import * as Speech from 'expo-speech'; // Import the speech library
 
 export default function App() {
   const animals = [
@@ -28,6 +29,11 @@ export default function App() {
     setCurrentAnimal((prev) => (prev + 1) % animals.length);
   };
 
+  const speakWord = () => {
+    const word = animals[currentAnimal].name;
+    Speech.speak(word, { language: 'ca' }); // Reads the word in Catalan
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Quin animal és?</Text>
@@ -38,7 +44,14 @@ export default function App() {
           resizeMode="contain"
         />
       </View>
-      {showAnswer && <Text style={styles.answer}>{animals[currentAnimal].name}</Text>}
+      {showAnswer && (
+        <View>
+          <Text style={styles.answer}>{animals[currentAnimal].name}</Text>
+          <TouchableOpacity style={styles.speakButton} onPress={speakWord}>
+            <Text style={styles.speakButtonText}>Escolta</Text>
+          </TouchableOpacity>
+        </View>
+      )}
       {!showAnswer && (
         <TouchableOpacity style={styles.button} onPress={() => setShowAnswer(true)}>
           <Text style={styles.buttonText}>QUÈ ÉS AIXÒ?</Text>
@@ -56,7 +69,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#FFF6F9', // Soft pink background for a kawaii style
+    backgroundColor: '#FFFACD', // Chicken yellow background
   },
   title: {
     fontSize: 28,
@@ -85,7 +98,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: '#FFB6C1',
-    marginBottom: 20,
+    marginBottom: 10,
   },
   button: {
     backgroundColor: '#FF6F61',
@@ -96,6 +109,18 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 18,
+    color: '#FFF',
+    fontWeight: 'bold',
+  },
+  speakButton: {
+    backgroundColor: '#FFD700', // Golden yellow for the listen button
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 30,
+    marginTop: 10,
+  },
+  speakButtonText: {
+    fontSize: 16,
     color: '#FFF',
     fontWeight: 'bold',
   },
