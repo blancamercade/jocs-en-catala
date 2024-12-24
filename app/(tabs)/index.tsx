@@ -1,69 +1,95 @@
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import * as Speech from 'expo-speech'; // Importem la llibreria Text-to-Speech
 
 export default function App() {
-  const animals = [
-    { name: 'gat', image: require('../../assets/images/gat.jpg') },
-    { name: 'gos', image: require('../../assets/images/gos.jpg') },
-    { name: 'cavall', image: require('../../assets/images/cavall.jpg') },
-    { name: 'peix', image: require('../../assets/images/peix.jpg') },
-    { name: 'ocell', image: require('../../assets/images/ocell.jpg') },
-    { name: 'os', image: require('../../assets/images/os.jpg') },
-    { name: 'ren', image: require('../../assets/images/ren.jpg') },
-    { name: 'porc', image: require('../../assets/images/porc.jpg') },
-    { name: 'pollet', image: require('../../assets/images/pollet.jpg') },
-    { name: 'vaca', image: require('../../assets/images/vaca.jpg') },
-    { name: 'ovella', image: require('../../assets/images/ovella.jpg') },
-    { name: 'gallina', image: require('../../assets/images/gallina.jpg') },
-    { name: 'conill', image: require('../../assets/images/conill.jpg') },
-    { name: 'guineu', image: require('../../assets/images/guineu.jpg') },
-    { name: 'esquirol', image: require('../../assets/images/esquirol.jpg') },
-  ];
+  const animals = {
+    "Farm Animals": [
+      { name: 'vaca', image: require('../../assets/images/vaca.jpg') },
+      { name: 'gallina', image: require('../../assets/images/gallina.jpg') },
+      { name: 'porc', image: require('../../assets/images/porc.jpg') },
+    ],
+    "Wild Animals": [
+      { name: 'os', image: require('../../assets/images/os.jpg') },
+      { name: 'ren', image: require('../../assets/images/ren.jpg') },
+      { name: 'guineu', image: require('../../assets/images/guineu.jpg') },
+    ],
+    Pets: [
+      { name: 'gat', image: require('../../assets/images/gat.jpg') },
+      { name: 'gos', image: require('../../assets/images/gos.jpg') },
+      { name: 'conill', image: require('../../assets/images/conill.jpg') },
+    ],
+  };
 
-  const [currentAnimal, setCurrentAnimal] = useState(0);
+  const [currentCategory, setCurrentCategory] = useState(null);
+  const [currentAnimalIndex, setCurrentAnimalIndex] = useState(0);
+  const [score, setScore] = useState(0);
   const [showAnswer, setShowAnswer] = useState(false);
+
+  const startCategory = (category) => {
+    setCurrentCategory(category);
+    setCurrentAnimalIndex(0);
+    setScore(0);
+    setShowAnswer(false);
+  };
 
   const nextAnimal = () => {
     setShowAnswer(false);
-    setCurrentAnimal((prev) => (prev + 1) % animals.length);
+    const animalList = animals[currentCategory];
+    const nextIndex = currentAnimalIndex + 1;
+    if (nextIndex < animalList.length) {
+      setCurrentAnimalIndex(nextIndex);
+    } else {
+      alert(`Game over! Your score: ${score}`);
+      setCurrentCategory(null);
+    }
   };
 
-  const speakWord = () => {
-    const word = animals[currentAnimal].name;
-    Speech.speak(word, {
-      language: 'ca', // Català
-      pitch: 1.0,     // Altura del to
-      rate: 1.0,      // Velocitat normal
-    });
+  const revealAnswer = () => {
+    setShowAnswer(true);
+    setScore(score + 1); // Add 1 point for revealing the answer
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Quin animal és?</Text>
-      <View style={styles.imageContainer}>
-        <Image
-          source={animals[currentAnimal].image}
-          style={styles.image}
-          resizeMode="contain"
-        />
-      </View>
-      {showAnswer && (
+      {!currentCategory ? (
         <View>
-          <Text style={styles.answer}>{animals[currentAnimal].name}</Text>
-          <TouchableOpacity style={styles.speakButton} onPress={speakWord}>
-            <Text style={styles.speakButtonText}>Escolta</Text>
+          <Text style={styles.title}>Select a Category</Text>
+          {Object.keys(animals).map((category) => (
+            <TouchableOpacity
+              key={category}
+              style={styles.button}
+              onPress={() => startCategory(category)}
+            >
+              <Text style={styles.buttonText}>{category}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      ) : (
+        <View>
+          <Text style={styles.title}>Quin animal és?</Text>
+          <View style={styles.imageContainer}>
+            <Image
+              source={animals[currentCategory][currentAnimalIndex].image}
+              style={styles.image}
+              resizeMode="contain"
+            />
+          </View>
+          {showAnswer && (
+            <Text style={styles.answer}>
+              {animals[currentCategory][currentAnimalIndex].name}
+            </Text>
+          )}
+          {!showAnswer && (
+            <TouchableOpacity style={styles.button} onPress={revealAnswer}>
+              <Text style={styles.buttonText}>Revela la resposta</Text>
+            </TouchableOpacity>
+          )}
+          <TouchableOpacity style={styles.button} onPress={nextAnimal}>
+            <Text style={styles.buttonText}>Següent animal</Text>
           </TouchableOpacity>
+          <Text style={styles.score}>Puntuació: {score}</Text>
         </View>
       )}
-      {!showAnswer && (
-        <TouchableOpacity style={styles.button} onPress={() => setShowAnswer(true)}>
-          <Text style={styles.buttonText}>QUÈ ÉS AIXÒ?</Text>
-        </TouchableOpacity>
-      )}
-      <TouchableOpacity style={styles.button} onPress={nextAnimal}>
-        <Text style={styles.buttonText}>SEGÜENT ANIMAL</Text>
-      </TouchableOpacity>
     </View>
   );
 }
@@ -71,9 +97,9 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#FFFACD', // Color de fons groc pollastre
+    alignItems: 'center',
+    backgroundColor: '#FFF6F9',
   },
   title: {
     fontSize: 28,
@@ -102,7 +128,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: '#FFB6C1',
-    marginBottom: 10,
+    marginBottom: 20,
   },
   button: {
     backgroundColor: '#FF6F61',
@@ -116,16 +142,10 @@ const styles = StyleSheet.create({
     color: '#FFF',
     fontWeight: 'bold',
   },
-  speakButton: {
-    backgroundColor: '#FFD700', // Groc brillant per al botó "Escolta"
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 30,
-    marginTop: 10,
-  },
-  speakButtonText: {
-    fontSize: 16,
-    color: '#FFF',
+  score: {
+    fontSize: 20,
     fontWeight: 'bold',
+    color: '#FF6F61',
+    marginTop: 20,
   },
 });
