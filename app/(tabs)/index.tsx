@@ -69,7 +69,7 @@ export default function App() {
     <View style={styles.container}>
       {!currentCategory ? (
         <View>
-          <Text style={styles.title}>Select a Category</Text>
+          <Text style={styles.title}>Habitat</Text>
           {Object.keys(animals).map((category) => (
             <TouchableOpacity
               key={category}
