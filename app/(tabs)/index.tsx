@@ -3,22 +3,39 @@ import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
 export default function App() {
   const animals = {
-    "Farm Animals": [
-      { name: 'vaca', image: require('../../assets/images/vaca.jpg') },
-      { name: 'gallina', image: require('../../assets/images/gallina.jpg') },
-      { name: 'porc', image: require('../../assets/images/porc.jpg') },
-    ],
-    "Wild Animals": [
-      { name: 'os', image: require('../../assets/images/os.jpg') },
-      { name: 'ren', image: require('../../assets/images/ren.jpg') },
-      { name: 'guineu', image: require('../../assets/images/guineu.jpg') },
-    ],
-    Pets: [
-      { name: 'gat', image: require('../../assets/images/gat.jpg') },
-      { name: 'gos', image: require('../../assets/images/gos.jpg') },
-      { name: 'conill', image: require('../../assets/images/conill.jpg') },
-    ],
-  };
+  "Household": [
+    { name: 'gat', image: require('../../assets/images/gat.jpg') },
+    { name: 'gos', image: require('../../assets/images/gos.jpg') },
+    { name: 'conill', image: require('../../assets/images/conill.jpg') },
+    { name: 'ocell', image: require('../../assets/images/ocell.jpg') },
+  ],
+  "Farm": [
+    { name: 'vaca', image: require('../../assets/images/vaca.jpg') },
+    { name: 'gallina', image: require('../../assets/images/gallina.jpg') },
+    { name: 'porc', image: require('../../assets/images/porc.jpg') },
+    { name: 'ovella', image: require('../../assets/images/ovella.jpg') },
+    { name: 'pollet', image: require('../../assets/images/pollet.jpg') },
+  ],
+  "Forest": [
+    { name: 'os', image: require('../../assets/images/os.jpg') },
+    { name: 'ren', image: require('../../assets/images/ren.jpg') },
+    { name: 'guineu', image: require('../../assets/images/guineu.jpg') },
+    { name: 'esquirol', image: require('../../assets/images/esquirol.jpg') },
+    { name: 'ratpenat', image: require('../../assets/images/ratpenat.jpg') },
+  ],
+  "Jungle": [
+    { name: 'elefant', image: require('../../assets/images/elefant.jpg') },
+    { name: 'tigre', image: require('../../assets/images/tigre.jpg') },
+    { name: 'tucà', image: require('../../assets/images/tuca.jpg') },
+    { name: 'lemur', image: require('../../assets/images/lemur.jpg') }, // Moved from Forest
+    { name: 'mico', image: require('../../assets/images/mico.jpg') },
+    { name: 'lleó', image: require('../../assets/images/lleo.jpg') }, // Moved from Forest
+    { name: 'cocodril', image: require('../../assets/images/cocodril.jpg') },
+    { name: 'serp', image: require('../../assets/images/serp.jpg') },
+    { name: 'pantera negra', image: require('../../assets/images/panteranegra.jpg') },
+    { name: 'girafa', image: require('../../assets/images/girafa.jpg') },
+  ],
+};
 
   const [currentCategory, setCurrentCategory] = useState(null);
   const [currentAnimalIndex, setCurrentAnimalIndex] = useState(0);
