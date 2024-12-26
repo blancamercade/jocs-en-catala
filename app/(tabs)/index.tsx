@@ -21,7 +21,6 @@ export default function App() {
     { name: 'ren', image: require('../../assets/images/ren.jpg') },
     { name: 'guineu', image: require('../../assets/images/guineu.jpg') },
     { name: 'esquirol', image: require('../../assets/images/esquirol.jpg') },
-    { name: 'ratpenat', image: require('../../assets/images/ratpenat.jpg') },
   ],
   "Jungle": [
     { name: 'elefant', image: require('../../assets/images/elefant.jpg') },
