@@ -1,40 +1,41 @@
 import React, { useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import * as Speech from 'expo-speech'; // Importing Speech
 
 export default function App() {
   const animals = {
-  "Animals de casa": [
-    { name: 'gat', image: require('../../assets/images/gat.jpg') },
-    { name: 'gos', image: require('../../assets/images/gos.jpg') },
-    { name: 'conill', image: require('../../assets/images/conill.jpg') },
-    { name: 'ocell', image: require('../../assets/images/ocell.jpg') },
-  ],
-  "Animals de granja": [
-    { name: 'vaca', image: require('../../assets/images/vaca.jpg') },
-    { name: 'gallina', image: require('../../assets/images/gallina.jpg') },
-    { name: 'porc', image: require('../../assets/images/porc.jpg') },
-    { name: 'ovella', image: require('../../assets/images/ovella.jpg') },
-    { name: 'pollet', image: require('../../assets/images/pollet.jpg') },
-  ],
-  "Animals de bosc": [
-    { name: 'os', image: require('../../assets/images/os.jpg') },
-    { name: 'ren', image: require('../../assets/images/ren.jpg') },
-    { name: 'guineu', image: require('../../assets/images/guineu.jpg') },
-    { name: 'esquirol', image: require('../../assets/images/esquirol.jpg') },
-  ],
-  "Animals de jungla": [
-    { name: 'elefant', image: require('../../assets/images/elefant.jpg') },
-    { name: 'tigre', image: require('../../assets/images/tigre.jpg') },
-    { name: 'tucà', image: require('../../assets/images/tuca.jpg') },
-    { name: 'lemur', image: require('../../assets/images/lemur.jpg') }, // Moved from Forest
-    { name: 'mico', image: require('../../assets/images/mico.jpg') },
-    { name: 'lleó', image: require('../../assets/images/lleo.jpg') }, // Moved from Forest
-    { name: 'cocodril', image: require('../../assets/images/cocodril.jpg') },
-    { name: 'serp', image: require('../../assets/images/serp.jpg') },
-    { name: 'pantera negra', image: require('../../assets/images/panteranegra.jpg') },
-    { name: 'girafa', image: require('../../assets/images/girafa.jpg') },
-  ],
-};
+    "Animals de casa": [
+      { name: 'gat', image: require('../../assets/images/gat.jpg') },
+      { name: 'gos', image: require('../../assets/images/gos.jpg') },
+      { name: 'conill', image: require('../../assets/images/conill.jpg') },
+      { name: 'ocell', image: require('../../assets/images/ocell.jpg') },
+    ],
+    "Animals de granja": [
+      { name: 'vaca', image: require('../../assets/images/vaca.jpg') },
+      { name: 'gallina', image: require('../../assets/images/gallina.jpg') },
+      { name: 'porc', image: require('../../assets/images/porc.jpg') },
+      { name: 'ovella', image: require('../../assets/images/ovella.jpg') },
+      { name: 'pollet', image: require('../../assets/images/pollet.jpg') },
+    ],
+    "Animals de bosc": [
+      { name: 'os', image: require('../../assets/images/os.jpg') },
+      { name: 'ren', image: require('../../assets/images/ren.jpg') },
+      { name: 'guineu', image: require('../../assets/images/guineu.jpg') },
+      { name: 'esquirol', image: require('../../assets/images/esquirol.jpg') },
+    ],
+    "Animals de jungla": [
+      { name: 'elefant', image: require('../../assets/images/elefant.jpg') },
+      { name: 'tigre', image: require('../../assets/images/tigre.jpg') },
+      { name: 'tucà', image: require('../../assets/images/tuca.jpg') },
+      { name: 'lemur', image: require('../../assets/images/lemur.jpg') },
+      { name: 'mico', image: require('../../assets/images/mico.jpg') },
+      { name: 'lleó', image: require('../../assets/images/lleo.jpg') },
+      { name: 'cocodril', image: require('../../assets/images/cocodril.jpg') },
+      { name: 'serp', image: require('../../assets/images/serp.jpg') },
+      { name: 'pantera negra', image: require('../../assets/images/panteranegra.jpg') },
+      { name: 'girafa', image: require('../../assets/images/girafa.jpg') },
+    ],
+  };
 
   const [currentCategory, setCurrentCategory] = useState(null);
   const [currentAnimalIndex, setCurrentAnimalIndex] = useState(0);
@@ -63,6 +64,11 @@ export default function App() {
   const revealAnswer = () => {
     setShowAnswer(true);
     setScore(score + 1); // Add 1 point for revealing the answer
+  };
+
+  const speakAnimalName = () => {
+    const currentAnimal = animals[currentCategory][currentAnimalIndex];
+    Speech.speak(currentAnimal.name, { language: 'ca-ES' }); // Speak in Catalan
   };
 
   return (
@@ -100,6 +106,9 @@ export default function App() {
               <Text style={styles.buttonText}>Revela la resposta</Text>
             </TouchableOpacity>
           )}
+          <TouchableOpacity style={styles.button} onPress={speakAnimalName}>
+            <Text style={styles.buttonText}>Escolta</Text>
+          </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={nextAnimal}>
             <Text style={styles.buttonText}>Següent animal</Text>
           </TouchableOpacity>
