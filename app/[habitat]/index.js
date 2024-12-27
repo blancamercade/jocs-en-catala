@@ -1,14 +1,11 @@
-import { useRouter, useRoute } from "expo-router";
+import { useRouter, useGlobalSearchParams } from "expo-router";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 const games = ["learn", "multiple-choice", "match", "pronunciation"];
 
 export default function GameSelectionScreen() {
   const router = useRouter();
-  const route = useRoute();
-
-  // Extract habitat from the route params
-  const { habitat } = route.params;
+  const { habitat } = useGlobalSearchParams(); // Retrieve the dynamic parameter
 
   return (
     <View style={styles.container}>
