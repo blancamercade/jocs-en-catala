@@ -1,6 +1,7 @@
-import { useGlobalSearchParams } from "expo-router";
+import { useGlobalSearchParams, useRouter } from "expo-router";
 import React, { useState } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import * as Speech from "expo-speech";
 
 const animals = {
   "Animals de casa": [
@@ -31,10 +32,12 @@ const animals = {
 
 export default function MultipleChoiceGame() {
   const { habitat } = useGlobalSearchParams(); // Get the selected habitat
+  const router = useRouter(); // Router for navigation
   const animalList = animals[habitat];
   const [currentAnimalIndex, setCurrentAnimalIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [options, setOptions] = useState(generateOptions());
+  const [waitingForAlert, setWaitingForAlert] = useState(false);
 
   function generateOptions() {
     const correctAnimal = animalList[currentAnimalIndex];
@@ -50,23 +53,63 @@ export default function MultipleChoiceGame() {
   }
 
   function handleAnswer(selectedOption) {
+    if (waitingForAlert) return; // Prevent multiple alerts
+    setWaitingForAlert(true); // Block further interactions until the alert is dismissed
+
+    // Speak the selected option
+    Speech.speak(selectedOption, { language: "ca-ES" });
+
     const correctAnimal = animalList[currentAnimalIndex];
     if (selectedOption === correctAnimal.name) {
-      setScore(score + 1);
-      Alert.alert("Correcte!", `La resposta és: ${correctAnimal.name}`);
+      Alert.alert(
+        "Correcte!",
+        `La resposta és: ${correctAnimal.name}`,
+        [
+          {
+            text: "Continuar",
+            onPress: () => {
+              Speech.speak(correctAnimal.name, { language: "ca-ES" }); // Speak correct answer
+              handleNext(true);
+            },
+          },
+        ]
+      );
     } else {
-      Alert.alert("Incorrecte", `Era: ${correctAnimal.name}`);
+      Alert.alert(
+        "Incorrecte",
+        `Era: ${correctAnimal.name}`,
+        [
+          {
+            text: "Continuar",
+            onPress: () => {
+              Speech.speak(correctAnimal.name, { language: "ca-ES" }); // Speak correct answer
+              handleNext(false);
+            },
+          },
+        ]
+      );
     }
+  }
+
+  function handleNext(correct) {
+    setWaitingForAlert(false); // Allow further interactions
+    if (correct) setScore(score + 1);
 
     const nextIndex = currentAnimalIndex + 1;
     if (nextIndex < animalList.length) {
       setCurrentAnimalIndex(nextIndex);
       setOptions(generateOptions());
     } else {
-      Alert.alert("Fi del joc!", `Has encertat ${score + 1} de ${animalList.length} animals.`);
-      setCurrentAnimalIndex(0);
-      setScore(0);
-      setOptions(generateOptions());
+      Alert.alert(
+        "Fi del joc!",
+        `Has encertat ${score + (correct ? 1 : 0)} de ${animalList.length} animals.`,
+        [
+          {
+            text: "Tornar als jocs",
+            onPress: () => router.replace(`/${habitat}`),
+          },
+        ]
+      );
     }
   }
 
