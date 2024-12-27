@@ -53,43 +53,46 @@ export default function MultipleChoiceGame() {
   }
 
   function handleAnswer(selectedOption) {
-    if (waitingForAlert) return; // Prevent multiple alerts
-    setWaitingForAlert(true); // Block further interactions until the alert is dismissed
+  if (waitingForAlert) return; // Prevent multiple alerts
+  setWaitingForAlert(true); // Block further interactions until the alert is dismissed
 
-    // Speak the selected option
-    Speech.speak(selectedOption, { language: "ca-ES" });
+  const correctAnimal = animalList[currentAnimalIndex];
 
-    const correctAnimal = animalList[currentAnimalIndex];
-    if (selectedOption === correctAnimal.name) {
-      Alert.alert(
-        "Correcte!",
-        `La resposta és: ${correctAnimal.name}`,
-        [
-          {
-            text: "Continuar",
-            onPress: () => {
-              Speech.speak(correctAnimal.name, { language: "ca-ES" }); // Speak correct answer
-              handleNext(true);
-            },
-          },
-        ]
-      );
-    } else {
-      Alert.alert(
-        "Incorrecte",
-        `Era: ${correctAnimal.name}`,
-        [
-          {
-            text: "Continuar",
-            onPress: () => {
-              Speech.speak(correctAnimal.name, { language: "ca-ES" }); // Speak correct answer
-              handleNext(false);
-            },
-          },
-        ]
-      );
-    }
+  // Speak the selected option immediately
+  Speech.speak(selectedOption, { language: "ca-ES" });
+
+  // Delay the speech for the correct answer by 2 seconds
+  setTimeout(() => {
+    Speech.speak(
+      `La resposta correcta és: ${correctAnimal.name}`,
+      { language: "ca-ES" }
+    );
+  }, 2000); // 2000ms = 2 seconds
+
+  if (selectedOption === correctAnimal.name) {
+    Alert.alert(
+      "Correcte!",
+      `La resposta és: ${correctAnimal.name}`,
+      [
+        {
+          text: "Continuar",
+          onPress: () => handleNext(true),
+        },
+      ]
+    );
+  } else {
+    Alert.alert(
+      "Incorrecte",
+      `Era: ${correctAnimal.name}`,
+      [
+        {
+          text: "Continuar",
+          onPress: () => handleNext(false),
+        },
+      ]
+    );
   }
+}
 
   function handleNext(correct) {
     setWaitingForAlert(false); // Allow further interactions
