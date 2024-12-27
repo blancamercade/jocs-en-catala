@@ -67,7 +67,7 @@ export default function MultipleChoiceGame() {
       `La resposta correcta és: ${correctAnimal.name}`,
       { language: "ca-ES" }
     );
-  }, 2000); // 2000ms = 2 seconds
+  }, 500); // 500ms = 0.5 seconds
 
   if (selectedOption === correctAnimal.name) {
     Alert.alert(
