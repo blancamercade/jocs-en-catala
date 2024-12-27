@@ -4,25 +4,25 @@ import { View, Text, Image, StyleSheet, TouchableOpacity, Alert } from "react-na
 import * as Speech from "expo-speech";
 
 const animals = {
-  "Animals de casa": [
+  "Casa": [
     { name: "gat", image: require("../../assets/images/gat.jpg") },
     { name: "gos", image: require("../../assets/images/gos.jpg") },
     { name: "conill", image: require("../../assets/images/conill.jpg") },
     { name: "ocell", image: require("../../assets/images/ocell.jpg") },
   ],
-  "Animals de granja": [
+  "Granja": [
     { name: "vaca", image: require("../../assets/images/vaca.jpg") },
     { name: "gallina", image: require("../../assets/images/gallina.jpg") },
     { name: "porc", image: require("../../assets/images/porc.jpg") },
     { name: "ovella", image: require("../../assets/images/ovella.jpg") },
   ],
-  "Animals de bosc": [
+  "Bosc": [
     { name: "os", image: require("../../assets/images/os.jpg") },
     { name: "guineu", image: require("../../assets/images/guineu.jpg") },
     { name: "ren", image: require("../../assets/images/ren.jpg") },
     { name: "esquirol", image: require("../../assets/images/esquirol.jpg") },
   ],
-  "Animals de jungla": [
+  "Jungla": [
     { name: "elefant", image: require("../../assets/images/elefant.jpg") },
     { name: "tigre", image: require("../../assets/images/tigre.jpg") },
     { name: "cocodril", image: require("../../assets/images/cocodril.jpg") },
