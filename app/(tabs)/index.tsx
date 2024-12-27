@@ -2,10 +2,10 @@ import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Link } from "expo-router";
 
 const habitats = [
-  "Animals de casa",
-  "Animals de granja",
-  "Animals de bosc",
-  "Animals de jungla",
+  "Casa",
+  "Granja",
+  "Bosc",
+  "Jungla",
 ];
 
 export default function HabitatScreen() {
