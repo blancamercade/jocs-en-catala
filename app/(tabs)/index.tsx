@@ -20,22 +20,6 @@ const animals = {
     { name: 'ovella', image: require('../../assets/images/ovella.jpg') },
     { name: 'pollet', image: require('../../assets/images/pollet.jpg') },
   ],
-  "Animals de bosc": [
-    { name: 'os', image: require('../../assets/images/os.jpg') },
-    { name: 'ren', image: require('../../assets/images/ren.jpg') },
-    { name: 'guineu', image: require('../../assets/images/guineu.jpg') },
-    { name: 'esquirol', image: require('../../assets/images/esquirol.jpg') },
-  ],
-  "Animals de jungla": [
-    { name: 'elefant', image: require('../../assets/images/elefant.jpg') },
-    { name: 'tigre', image: require('../../assets/images/tigre.jpg') },
-    { name: 'tucà', image: require('../../assets/images/tuca.jpg') },
-    { name: 'lemur', image: require('../../assets/images/lemur.jpg') },
-    { name: 'mico', image: require('../../assets/images/mico.jpg') },
-    { name: 'lleó', image: require('../../assets/images/lleo.jpg') },
-    { name: 'cocodril', image: require('../../assets/images/cocodril.jpg') },
-    { name: 'serp', image: require('../../assets/images/serp.jpg') },
-  ],
 };
 
 const HabitatScreen = ({ navigation }) => {
@@ -59,23 +43,16 @@ const HabitatScreen = ({ navigation }) => {
 
 const GameSelectionScreen = ({ route, navigation }) => {
   const { habitat } = route.params;
-  const games = ["Learn", "Multiple Choice", "Match", "Pronunciation"];
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Hàbitat: {habitat}</Text>
-      <Text style={styles.subtitle}>Tria un joc</Text>
-      {games.map((game) => (
-        <TouchableOpacity
-          key={game}
-          style={styles.button}
-          onPress={() =>
-            navigation.navigate(`${game}Game`, { habitat })
-          }
-        >
-          <Text style={styles.buttonText}>{game}</Text>
-        </TouchableOpacity>
-      ))}
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => navigation.navigate('LearnGame', { habitat })}
+      >
+        <Text style={styles.buttonText}>Learn</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -140,11 +117,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: '#FF6F61',
     marginBottom: 20,
-  },
-  subtitle: {
-    fontSize: 20,
-    color: '#FF6F61',
-    marginBottom: 15,
   },
   imageContainer: {
     width: 250,
