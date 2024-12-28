@@ -41,7 +41,7 @@ const animals = {
 const { width } = Dimensions.get("window");
 
 export default function MatchGame() {
-  const { habitat } = useSearchParams(); // Retrieve the selected habitat
+  const { habitat } = useGlobalSearchParams(); // Retrieve the selected habitat
   const router = useRouter(); // For navigation
   const animalList = animals[habitat]; // Get the animals for the selected habitat
 
