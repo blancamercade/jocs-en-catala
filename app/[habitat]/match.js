@@ -1,3 +1,4 @@
+import { useGlobalSearchParams } from "expo-router";
 import { useSearchParams, useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
