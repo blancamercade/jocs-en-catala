@@ -1,6 +1,5 @@
 import { useGlobalSearchParams } from "expo-router";
-import { useSearchParams, useRouter } from "expo-router";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -39,16 +38,18 @@ const animals = {
   ],
 };
 
-const { width } = Dimensions.get("window");
+const { width, height } = Dimensions.get("window");
 
 export default function MatchGame() {
   const { habitat } = useGlobalSearchParams(); // Retrieve the selected habitat
-  const router = useRouter(); // For navigation
   const animalList = animals[habitat]; // Get the animals for the selected habitat
-
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedName, setSelectedName] = useState(null);
   const [matches, setMatches] = useState([]);
+
+  useEffect(() => {
+    console.log("Animal List:", animalList);
+  }, [animalList]);
 
   const handleImagePress = (index) => {
     setSelectedImage(index);
@@ -73,14 +74,16 @@ export default function MatchGame() {
 
   const isGameComplete = matches.length === animalList.length;
 
-  if (isGameComplete) {
-    Alert.alert("Felicitats!", "Has completat el joc!", [
-      {
-        text: "Tornar als jocs",
-        onPress: () => router.push(`/${habitat}`),
-      },
-    ]);
-  }
+  useEffect(() => {
+    if (isGameComplete) {
+      Alert.alert("Felicitats!", "Has completat el joc!", [
+        {
+          text: "Tornar als jocs",
+          onPress: () => console.log("Navigate back"),
+        },
+      ]);
+    }
+  }, [isGameComplete]);
 
   return (
     <View style={styles.container}>
@@ -124,13 +127,13 @@ export default function MatchGame() {
             ))}
         </View>
       </View>
-      <Svg height="100%" width="100%" style={StyleSheet.absoluteFill}>
+      <Svg height={height} width={width} style={StyleSheet.absoluteFill}>
         {matches.map((match, index) => (
           <Line
             key={index}
             x1={50}
             y1={match.imageIndex * 100 + 50}
-            x2={width - 50}
+            x2={width - 150}
             y2={match.imageIndex * 100 + 50} // Match line to correct name index
             stroke="red"
             strokeWidth="2"
