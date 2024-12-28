@@ -41,19 +41,22 @@ const animals = {
 const { width, height } = Dimensions.get("window");
 
 export default function MatchGame() {
-  const { habitat } = useGlobalSearchParams(); // Retrieve the selected habitat
-  const animalList = animals[habitat]; // Get the animals for the selected habitat
+  const { habitat } = useGlobalSearchParams();
+  const animalList = animals[habitat];
+
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedName, setSelectedName] = useState(null);
   const [matches, setMatches] = useState([]);
 
   useEffect(() => {
-    console.log("Animal List:", animalList);
+    console.log("Animal List Loaded:", animalList);
   }, [animalList]);
 
   const handleImagePress = (index) => {
+    console.log("Image Pressed:", index);
     setSelectedImage(index);
     if (selectedName !== null && animalList[index].name === selectedName) {
+      console.log("Match Found:", animalList[index].name);
       setMatches([...matches, { imageIndex: index, name: selectedName }]);
       setSelectedImage(null);
       setSelectedName(null);
@@ -61,8 +64,10 @@ export default function MatchGame() {
   };
 
   const handleNamePress = (name) => {
+    console.log("Name Pressed:", name);
     setSelectedName(name);
     if (selectedImage !== null && animalList[selectedImage].name === name) {
+      console.log("Match Found:", name);
       setMatches([...matches, { imageIndex: selectedImage, name }]);
       setSelectedImage(null);
       setSelectedName(null);
@@ -71,6 +76,10 @@ export default function MatchGame() {
 
   const isMatched = (index, name) =>
     matches.some((match) => match.imageIndex === index || match.name === name);
+
+  useEffect(() => {
+    console.log("Matches Updated:", matches);
+  }, [matches]);
 
   const isGameComplete = matches.length === animalList.length;
 
@@ -127,19 +136,6 @@ export default function MatchGame() {
             ))}
         </View>
       </View>
-      <Svg height={height} width={width} style={StyleSheet.absoluteFill}>
-        {matches.map((match, index) => (
-          <Line
-            key={index}
-            x1={50}
-            y1={match.imageIndex * 100 + 50}
-            x2={width - 150}
-            y2={match.imageIndex * 100 + 50} // Match line to correct name index
-            stroke="red"
-            strokeWidth="2"
-          />
-        ))}
-      </Svg>
     </View>
   );
 }
