@@ -38,25 +38,29 @@ const animals = {
   ],
 };
 
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
 export default function MatchGame() {
   const { habitat } = useGlobalSearchParams();
   const animalList = animals[habitat];
 
+  const [shuffledNames, setShuffledNames] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedName, setSelectedName] = useState(null);
   const [matches, setMatches] = useState([]);
 
   useEffect(() => {
-    console.log("Animal List Loaded:", animalList);
+    // Shuffle names once when the component mounts
+    setShuffledNames(
+      animalList
+        .map((animal) => animal.name)
+        .sort(() => Math.random() - 0.5)
+    );
   }, [animalList]);
 
   const handleImagePress = (index) => {
-    console.log("Image Pressed:", index);
     setSelectedImage(index);
     if (selectedName !== null && animalList[index].name === selectedName) {
-      console.log("Match Found:", animalList[index].name);
       setMatches([...matches, { imageIndex: index, name: selectedName }]);
       setSelectedImage(null);
       setSelectedName(null);
@@ -64,10 +68,8 @@ export default function MatchGame() {
   };
 
   const handleNamePress = (name) => {
-    console.log("Name Pressed:", name);
     setSelectedName(name);
     if (selectedImage !== null && animalList[selectedImage].name === name) {
-      console.log("Match Found:", name);
       setMatches([...matches, { imageIndex: selectedImage, name }]);
       setSelectedImage(null);
       setSelectedName(null);
@@ -75,11 +77,9 @@ export default function MatchGame() {
   };
 
   const isMatched = (index, name) =>
-    matches.some((match) => match.imageIndex === index || match.name === name);
-
-  useEffect(() => {
-    console.log("Matches Updated:", matches);
-  }, [matches]);
+    matches.some(
+      (match) => match.imageIndex === index || match.name === name
+    );
 
   const isGameComplete = matches.length === animalList.length;
 
@@ -105,6 +105,7 @@ export default function MatchGame() {
               onPress={() => handleImagePress(index)}
               style={[
                 styles.imageContainer,
+                isMatched(index, null) && styles.matched,
                 selectedImage === index && styles.selected,
               ]}
               disabled={isMatched(index, null)}
@@ -118,22 +119,20 @@ export default function MatchGame() {
           ))}
         </View>
         <View style={styles.column}>
-          {animalList
-            .map((animal) => animal.name)
-            .sort(() => Math.random() - 0.5)
-            .map((name, index) => (
-              <TouchableOpacity
-                key={index}
-                onPress={() => handleNamePress(name)}
-                style={[
-                  styles.nameContainer,
-                  selectedName === name && styles.selected,
-                ]}
-                disabled={isMatched(null, name)}
-              >
-                <Text style={styles.name}>{name}</Text>
-              </TouchableOpacity>
-            ))}
+          {shuffledNames.map((name, index) => (
+            <TouchableOpacity
+              key={index}
+              onPress={() => handleNamePress(name)}
+              style={[
+                styles.nameContainer,
+                isMatched(null, name) && styles.matched,
+                selectedName === name && styles.selected,
+              ]}
+              disabled={isMatched(null, name)}
+            >
+              <Text style={styles.name}>{name}</Text>
+            </TouchableOpacity>
+          ))}
         </View>
       </View>
     </View>
@@ -188,5 +187,8 @@ const styles = StyleSheet.create({
   selected: {
     borderColor: "blue",
     borderWidth: 2,
+  },
+  matched: {
+    backgroundColor: "#90EE90", // Light green for matched items
   },
 });
