@@ -42,7 +42,9 @@ const { width } = Dimensions.get("window");
 
 export default function MatchGame() {
   const { habitat } = useGlobalSearchParams();
-  const animalList = animals[habitat];
+
+  // Ensure animalList is defined
+  const animalList = animals[habitat] || [];
 
   const [shuffledNames, setShuffledNames] = useState([]);
   const [selectedImage, setSelectedImage] = useState(null);
@@ -50,12 +52,14 @@ export default function MatchGame() {
   const [matches, setMatches] = useState([]);
 
   useEffect(() => {
-    // Shuffle names once when the component mounts
-    setShuffledNames(
-      animalList
-        .map((animal) => animal.name)
-        .sort(() => Math.random() - 0.5)
-    );
+    if (animalList.length > 0) {
+      // Shuffle names once when the component mounts
+      setShuffledNames(
+        animalList
+          .map((animal) => animal.name)
+          .sort(() => Math.random() - 0.5)
+      );
+    }
   }, [animalList]);
 
   const handleImagePress = (index) => {
@@ -84,7 +88,7 @@ export default function MatchGame() {
   const isGameComplete = matches.length === animalList.length;
 
   useEffect(() => {
-    if (isGameComplete) {
+    if (isGameComplete && animalList.length > 0) {
       Alert.alert("Felicitats!", "Has completat el joc!", [
         {
           text: "Tornar als jocs",
@@ -93,6 +97,14 @@ export default function MatchGame() {
       ]);
     }
   }, [isGameComplete]);
+
+  if (animalList.length === 0) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.title}>No s'han trobat animals per aquest hàbitat</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -189,6 +201,6 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   matched: {
-    backgroundColor: "#90EE90", // Light green for matched items
+    backgroundColor: "#90EE90",
   },
 });
