@@ -1,3 +1,4 @@
+import { useSearchParams, useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
   View,
@@ -23,13 +24,26 @@ const animals = {
     { name: "porc", image: require("../../assets/images/porc.jpg") },
     { name: "ovella", image: require("../../assets/images/ovella.jpg") },
   ],
+  Bosc: [
+    { name: "os", image: require("../../assets/images/os.jpg") },
+    { name: "guineu", image: require("../../assets/images/guineu.jpg") },
+    { name: "ren", image: require("../../assets/images/ren.jpg") },
+    { name: "esquirol", image: require("../../assets/images/esquirol.jpg") },
+  ],
+  Jungla: [
+    { name: "elefant", image: require("../../assets/images/elefant.jpg") },
+    { name: "tigre", image: require("../../assets/images/tigre.jpg") },
+    { name: "cocodril", image: require("../../assets/images/cocodril.jpg") },
+    { name: "lleó", image: require("../../assets/images/lleo.jpg") },
+  ],
 };
 
 const { width } = Dimensions.get("window");
 
-export default function MatchGame({ route }) {
-  const { habitat } = route.params;
-  const animalList = animals[habitat];
+export default function MatchGame() {
+  const { habitat } = useSearchParams(); // Retrieve the selected habitat
+  const router = useRouter(); // For navigation
+  const animalList = animals[habitat]; // Get the animals for the selected habitat
 
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedName, setSelectedName] = useState(null);
@@ -62,7 +76,7 @@ export default function MatchGame({ route }) {
     Alert.alert("Felicitats!", "Has completat el joc!", [
       {
         text: "Tornar als jocs",
-        onPress: () => route.navigation.navigate(`/${habitat}`),
+        onPress: () => router.push(`/${habitat}`),
       },
     ]);
   }
@@ -116,7 +130,7 @@ export default function MatchGame({ route }) {
             x1={50}
             y1={match.imageIndex * 100 + 50}
             x2={width - 50}
-            y2={match.nameIndex * 100 + 50}
+            y2={match.imageIndex * 100 + 50} // Match line to correct name index
             stroke="red"
             strokeWidth="2"
           />
