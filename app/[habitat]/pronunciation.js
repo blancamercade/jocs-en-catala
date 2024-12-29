@@ -1,3 +1,4 @@
+import { useRouter, useGlobalSearchParams } from "expo-router";
 import React, { useState } from "react";
 import {
   View,
@@ -21,7 +22,7 @@ const animals = {
 };
 
 export default function PronunciationGame({ route, navigation }) {
-  const { habitat } = route.params; // Retrieve habitat from params
+  const { habitat } = useGlobalSearchParams(); // Retrieve habitat from params
   const animalList = animals[habitat];
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isListening, setIsListening] = useState(false);
