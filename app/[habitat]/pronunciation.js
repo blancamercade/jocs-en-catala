@@ -45,7 +45,7 @@ const animals = {
   ],
 };
 
-export default function PronunciationGame({ route }) {
+export default function PronunciationGame() {
   const { habitat } = useGlobalSearchParams();
   const router = useRouter();
   const animalList = animals[habitat];
@@ -62,7 +62,7 @@ export default function PronunciationGame({ route }) {
       setSpokenText(""); // Reset spoken text
       await Voice.start("ca-ES"); // Start listening in Catalan
     } catch (error) {
-      Alert.alert("Error", "No s'ha pogut iniciar l'escolta.");
+      Alert.alert("Error", `Error starting listening: ${error.message}`);
       setIsListening(false);
     }
   };
@@ -73,7 +73,7 @@ export default function PronunciationGame({ route }) {
       await Voice.stop();
       setIsListening(false);
     } catch (error) {
-      Alert.alert("Error", "No s'ha pogut aturar l'escolta.");
+      Alert.alert("Error", `Error stopping listening: ${error.message}`);
     }
   };
 
@@ -82,22 +82,24 @@ export default function PronunciationGame({ route }) {
     const spokenWord = event.value ? event.value[0].toLowerCase() : "";
     setSpokenText(spokenWord);
 
+    const isCorrect = spokenWord === currentAnimal.name.toLowerCase();
+    Speech.speak(
+      isCorrect
+        ? `Correcte! Has pronunciat ${currentAnimal.name} correctament!`
+        : `Incorrecte! La resposta correcta és ${currentAnimal.name}.`,
+      { language: "ca-ES" }
+    );
+
     setTimeout(() => {
-      const isCorrect = spokenWord === currentAnimal.name.toLowerCase();
-      Speech.speak(
-        isCorrect
-          ? `Correcte! Has pronunciat ${currentAnimal.name} correctament!`
-          : `Incorrecte! La resposta correcta és ${currentAnimal.name}.`,
-        { language: "ca-ES" }
-      );
-    }, 1500);
+      if (isCorrect) nextAnimal();
+    }, 2000);
   };
 
   // Initialize Voice recognition listeners
   useEffect(() => {
     Voice.onSpeechResults = onSpeechResults;
     Voice.onSpeechError = (error) => {
-      Alert.alert("Error", "Hi ha hagut un problema amb l'escolta.");
+      Alert.alert("Error", `Speech recognition error: ${error.message}`);
       setIsListening(false);
     };
 
@@ -147,7 +149,7 @@ export default function PronunciationGame({ route }) {
       </TouchableOpacity>
       {spokenText && (
         <Text style={styles.feedback}>
-          Has dit: {spokenText}. {spokenText === currentAnimal.name ? "Correcte!" : ""}
+          Has dit: {spokenText}.
         </Text>
       )}
       <TouchableOpacity style={styles.button} onPress={nextAnimal}>
